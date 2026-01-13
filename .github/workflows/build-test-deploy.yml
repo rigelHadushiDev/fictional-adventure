@@ -31,5 +31,46 @@ jobs:
       - run: npm install
       #It tests the project
       - run: npm test
+  
+  deploy:
+    needs: test
+    # Permission that you give gthe workflow
+    permissions:
+      # Add changes to the repo, add files, modify, delete
+      contents: write
+      # Allows a workflow to create or update a GitHub Pages site for the repository.
+      pages: write
+      # Allows the workflow to generate OpenID Connect (OIDC) tokens from GitHub, which are temporary access tokens from GitHub
+      id-token: write
+
+    # Deploying Environmnet that we opened
+    environment:
+      name: production
+      url: ${{ steps.deployment.outputs.page_url }}
+      
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+        with: 
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: use node.js
+        uses: actions/setup-node@v4
+        with: 
+          static_site_generator: next
+      - name: configure github pages
+        uses: actions/configure-pages@v4
+        with: 
+          path: next 
+      - run: npm install 
+      - run: npm run build
+      - name: upload artifacts
+        uses: actions/upload-pages-artifacts@v3
+        # Upload the building files inside the dist folder which in this case for nextjs is out folder
+        with: 
+          path: './out'
+      - name: deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
         
-    
