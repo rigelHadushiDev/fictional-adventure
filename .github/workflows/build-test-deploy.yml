@@ -67,7 +67,7 @@ jobs:
       - run: npm run build
       - run: npm run export
       - name: upload artifacts
-        uses: actions/upload-pages-artifacts@v3
+        uses: actions/upload-pages-artifact@v3
         # Upload the building files inside the dist folder which in this case for nextjs is out folder
         with: 
           path: './out'
