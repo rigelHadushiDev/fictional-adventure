@@ -58,14 +58,13 @@ jobs:
       - name: use node.js
         uses: actions/setup-node@v4
         with: 
-          static_site_generator: next
+          node-version: '20.x'
       - name: configure github pages
         uses: actions/configure-pages@v4
         with: 
-          path: next 
+          static_site_generator: next 
       - run: npm install 
       - run: npm run build
-      - run: npm run export
       - name: upload artifacts
         uses: actions/upload-pages-artifact@v3
         # Upload the building files inside the dist folder which in this case for nextjs is out folder
