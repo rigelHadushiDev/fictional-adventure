@@ -1,5 +1,8 @@
 name: build-test-deploy
 on: push
+concurrency:
+  group: pages
+  cancel-in-progress: true
 jobs:
 # For each job we need to specify a runner
   build:
